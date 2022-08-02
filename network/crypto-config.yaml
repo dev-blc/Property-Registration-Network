@@ -1,27 +1,21 @@
 OrdererOrgs:
   - Name: Orderer
-    Domain: certification-network.com
+    Domain: property-registration-network.com
     Specs:
       - Hostname: orderer
 PeerOrgs:
- - Name: iit
-   Domain: iit.certification-network.com
+ - Name: registrar
+   Domain: registrar.property-registration-network.com
    EnableNodeOUs: true
    Template:
       Count: 2
    Users:
       Count: 1
- - Name: mhrd
-   Domain: mhrd.certification-network.com
+ - Name: users
+   Domain: users.property-registration-network.com
    EnableNodeOUs: true
    Template:
-      Count: 2
+      Count: 3
    Users:
       Count: 1
- - Name: upgrad
-   Domain: upgrad.certification-network.com
-   EnableNodeOUs: true
-   Template:
-      Count: 2
-   Users:
-      Count: 1
+

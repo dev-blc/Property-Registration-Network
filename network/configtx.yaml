@@ -2,7 +2,7 @@ Organizations:
   - &OrdererOrg
     Name: Orderer
     ID: OrdererMSP
-    MSPDir: crypto-config/ordererOrganizations/certification-network.com/msp
+    MSPDir: crypto-config/ordererOrganizations/property-registration-network.com/msp
     Policies:
       Readers:
         Type: Signature
@@ -14,59 +14,41 @@ Organizations:
         Type: Signature
         Rule: "OR('OrdererMSP.member')"
 
-  - &iit
-    Name: iitMSP
-    ID: iitMSP
-    MSPDir: crypto-config/peerOrganizations/iit.certification-network.com/msp
+  - &registrar
+    Name: registrarMSP
+    ID: registrarMSP
+    MSPDir: crypto-config/peerOrganizations/registrar.property-registration-network.com/msp
     Policies:
       Readers:
         Type: Signature
-        Rule: "OR('iitMSP.admin', 'iitMSP.peer', 'iitMSP.client')"
+        Rule: "OR('registrarMSP.admin', 'registrarMSP.peer', 'registrarMSP.client')"
       Writers:
         Type: Signature
-        Rule: "OR('iitMSP.admin', 'iitMSP.peer', 'iitMSP.client')"
+        Rule: "OR('registrarMSP.admin', 'registrarMSP.peer', 'registrarMSP.client')"
       Admins:
         Type: Signature
-        Rule: "OR('iitMSP.admin', 'iitMSP.peer', 'iitMSP.client')"
+        Rule: "OR('registrarMSP.admin', 'registrarMSP.peer', 'registrarMSP.client')"
     AnchorPeers:
-      - Host: peer0.iit.certification-network.com
+      - Host: peer0.registrar.property-registration-network.com
         Port: 7051
 
-  - &mhrd
-    Name: mhrdMSP
-    ID: mhrdMSP
-    MSPDir: crypto-config/peerOrganizations/mhrd.certification-network.com/msp
+  - &users
+    Name: usersMSP
+    ID: usersMSP
+    MSPDir: crypto-config/peerOrganizations/users.property-registration-network.com/msp
     Policies:
       Readers:
         Type: Signature
-        Rule: "OR('mhrdMSP.admin', 'mhrdMSP.peer', 'mhrdMSP.client')"
+        Rule: "OR('usersMSP.admin', 'usersMSP.peer', 'usersMSP.client')"
       Writers:
         Type: Signature
-        Rule: "OR('mhrdMSP.admin', 'mhrdMSP.peer', 'mhrdMSP.client')"
+        Rule: "OR('usersMSP.admin', 'usersMSP.peer', 'usersMSP.client')"
       Admins:
         Type: Signature
-        Rule: "OR('mhrdMSP.admin', 'mhrdMSP.peer', 'mhrdMSP.client')"
+        Rule: "OR('usersMSP.admin', 'usersMSP.peer', 'usersMSP.client')"
     AnchorPeers:
-      - Host: peer0.mhrd.certification-network.com
+      - Host: peer0.users.property-registration-network.com
         Port: 9051
-
-  - &upgrad
-    Name: upgradMSP
-    ID: upgradMSP
-    MSPDir: crypto-config/peerOrganizations/upgrad.certification-network.com/msp
-    Policies:
-      Readers:
-        Type: Signature
-        Rule: "OR('upgradMSP.admin', 'upgradMSP.peer', 'upgradMSP.client')"
-      Writers:
-        Type: Signature
-        Rule: "OR('upgradMSP.admin', 'upgradMSP.peer', 'upgradMSP.client')"
-      Admins:
-        Type: Signature
-        Rule: "OR('upgradMSP.admin', 'upgradMSP.peer', 'upgradMSP.client')"
-    AnchorPeers:
-      - Host: peer0.upgrad.certification-network.com
-        Port: 11051
 
 
 
@@ -74,7 +56,7 @@ Organizations:
 
 Capabilities:
   Channel: &ChannelCapabilities
-    V1_4_3: true
+    V1_4_2: true
     V1_3: false
     V1_1: false
   Orderer: &OrdererCapabilities
@@ -106,7 +88,7 @@ Application: &ApplicationDefaults
 Orderer: &OrdererDefaults
   OrdererType: solo
   Addresses:
-    - orderer.certification-network.com:7050
+    - orderer.property-registration-network.com:7050
   BatchTimeout: 2s
   BatchSize:
     MaxMessageCount: 10
@@ -161,19 +143,17 @@ Profiles:
       Capabilities:
         <<: *OrdererCapabilities
     Consortiums:
-      CertificationConsortium:
+      RegistrationConsortium:
         Organizations:
-          - *iit
-          - *mhrd
-          - *upgrad
+          - *registrar
+          - *users
 
-  CertificationChannel:
-    Consortium: CertificationConsortium
+  RegistrationChannel:
+    Consortium: RegistrationConsortium
     Application:
       <<: *ApplicationDefaults
       Organizations:
-        - *iit
-        - *mhrd
-        - *upgrad
+        - *users
+        - *registrar
       Capabilities:
         <<: *ApplicationCapabilities
